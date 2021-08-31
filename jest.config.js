@@ -3,7 +3,6 @@ const { compilerOptions } = require('./tsconfig.json');
 
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
-
 module.exports = {
     // All imported modules in your tests should be mocked automatically
     // automock: false,
@@ -22,11 +21,11 @@ module.exports = {
 
     // An array of glob patterns indicating a set of files for which coverage information should be collected
     collectCoverageFrom: [
-        '<rootDir>/src/*.ts'
+        '<rootDir>/src/modules/**/services/*.ts'
     ],
 
     // The directory where Jest should output its coverage files
-    coverageDirectory: 'coverage',
+    coverageDirectory: './coverage/test-reports/tests/',
 
     // An array of regexp pattern strings used to skip coverage collection
     // coveragePathIgnorePatterns: [
@@ -37,10 +36,10 @@ module.exports = {
     // coverageProvider: "babel",
 
     // A list of reporter names that Jest uses when writing coverage reports
-    coverageReporters: [
-        "text-summary",
-        "lcov"
-    ],
+    // coverageReporters: [
+    //     "text-summary",
+    //     "lcov"
+    // ],
 
     // An object that configures minimum threshold enforcement for coverage results
     // coverageThreshold: undefined,
@@ -100,7 +99,13 @@ module.exports = {
     // projects: undefined,
 
     // Use this configuration option to add custom reporters to Jest
-    // reporters: undefined,
+    // reporters: [
+    //     [ 
+    //         "jest-junit", { 
+    //             suiteName: "API ChatBoot tests",
+    //         } 
+    //     ]
+    // ],
 
     // Automatically reset mock state between every test
     // resetMocks: false,
