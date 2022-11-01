@@ -1,28 +1,27 @@
 import AppError from "@shared/errors/AppError";
 
-import FakeWtihdrawMoneyRepository from "../repositories/fakes/FakeWithdrawMoneyRepository";
+import FakeWithdrawMoneyRepository from "../repositories/fakes/FakeWithdrawMoneyRepository";
 import WithdrawMoneyService from "../services/WithdrawMoneyService";
 import FakeAccountRepository from "../../account/repositories/fakes/FakeAccountRepository";
 
-let fakeWtihdrawMoneyRepository: FakeWtihdrawMoneyRepository;
+let fakeWithdrawMoneyRepository: FakeWithdrawMoneyRepository;
 let fakeAccountRepository: FakeAccountRepository;
-let WtihdrawMoneyService: WithdrawMoneyService;
+let withdrawMoneyService: WithdrawMoneyService;
 
 
-describe("WtihdrawMoney", () => {
+describe("WithdrawMoney", () => {
   beforeEach(() => {
-    fakeWtihdrawMoneyRepository = new FakeWtihdrawMoneyRepository();
+    fakeWithdrawMoneyRepository = new FakeWithdrawMoneyRepository();
     fakeAccountRepository = new FakeAccountRepository();
 
-    WtihdrawMoneyService = new WithdrawMoneyService(
-      fakeWtihdrawMoneyRepository,
+    withdrawMoneyService = new WithdrawMoneyService(
+      fakeWithdrawMoneyRepository,
       fakeAccountRepository
     );
   });
 
   it("should be able to make Withdraw", async () => {
-
-    const transaction = await WtihdrawMoneyService.execute({
+    const transaction = await withdrawMoneyService.execute({
       accountId: 1,
       value: 10.00
     });
@@ -32,47 +31,74 @@ describe("WtihdrawMoney", () => {
   
   it("should not be able to make Withdraw for account non-existing", async () => {
     expect(
-      WtihdrawMoneyService.execute({
+      withdrawMoneyService.execute({
         accountId: 2,
         value: 10.00
       }),
     ).rejects.toBeInstanceOf(AppError);
+
+    expect(() => withdrawMoneyService.execute({
+      accountId: 2,
+      value: 10.00
+    })).rejects.toHaveProperty('message','Conta inválida!');
   });
 
   it("should not be able to make Withdraw for invalid value", async () => {
     expect(
-      WtihdrawMoneyService.execute({
+      withdrawMoneyService.execute({
         accountId: 1,
         value: 0.00
       }),
     ).rejects.toBeInstanceOf(AppError);
+
+    expect(() => withdrawMoneyService.execute({
+      accountId: 1,
+      value: 0.00
+    })).rejects.toHaveProperty('message','Valor da transação invalido!');
   });
 
-  it("should not be able to make Withdraw for  insert  invalid transaction", async () => {
+  it("should not be able to make Withdraw for insert invalid transaction", async () => {
     expect(
-      WtihdrawMoneyService.execute({
+      withdrawMoneyService.execute({
         accountId: 1,
         value: 0.01
       }),
     ).rejects.toBeInstanceOf(AppError);
+
+    expect(() => withdrawMoneyService.execute({
+      accountId: 1,
+      value: 0.01
+    })).rejects.toHaveProperty('message','Falha ao realizar o saque!');
   });
 
   it("should not be able to make Withdraw with value > limit", async () => {
     expect(
-      WtihdrawMoneyService.execute({
+      withdrawMoneyService.execute({
         accountId: 1,
         value: 700.00
       }),
     ).rejects.toBeInstanceOf(AppError);
+
+    expect(() => withdrawMoneyService.execute({
+      accountId: 1,
+      value: 700.00
+    })).rejects.toHaveProperty('message','Valor do saque maior que o limite permitido!');
   });
 
   it("should not be able to make Withdraw with value > balance", async () => {
     expect(
-      WtihdrawMoneyService.execute({
+      withdrawMoneyService.execute({
         accountId: 1,
         value: 100.00
       }),
     ).rejects.toBeInstanceOf(AppError);
+
+    expect(
+      withdrawMoneyService.execute({
+        accountId: 1,
+        value: 100.00
+      }),
+    ).rejects.toHaveProperty('message', 'Saldo insuficiente!');
   });
 
 });

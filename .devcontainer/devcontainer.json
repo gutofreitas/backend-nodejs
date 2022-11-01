@@ -1,12 +1,10 @@
 {
-	"name": "Moovin",
+	"name": "Tests",
 	"dockerComposeFile": [
 		"docker-compose.yml"
 	],
-	"service": "app_moovin",
+	"service": "app_tests",
 	"workspaceFolder": "/user/app",
 	"shutdownAction": "stopCompose",
-	"settings": {
-		"terminal.integrated.shell.linux": "/bin/bash"
-	}
+	
 }

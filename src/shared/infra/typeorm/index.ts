@@ -8,7 +8,6 @@ const pgConfig: PostgresConnectionOptions = {
   port: Number(process.env.PG_PORT),
   username: process.env.PG_USER,
   password: process.env.PG_PASS,
-  schema: process.env.PG_SCHEMA,
   database: process.env.PG_DATABASE,
   synchronize: true,
   migrationsTableName: "migration_table",

@@ -27,6 +27,9 @@ class WithdrawMoneyService {
     accountId,
     value,
   }: IRequestWithdrawMoneyDTO): Promise<ITransactionDTO> {
+    if(value <= 0){
+      throw new AppError("Valor da transação invalido!", 400);
+    }
     
     const account = await this.accountRepository.findById(accountId);
 

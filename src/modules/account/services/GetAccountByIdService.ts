@@ -19,7 +19,7 @@ class GetAccountByIdService {
       if(!account || account === undefined) {
         throw new AppError("Conta não encontrada", 204);
       }
-      //TODO format money on response
+      
       return account;
   }
 }

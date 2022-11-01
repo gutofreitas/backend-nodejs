@@ -21,7 +21,6 @@ describe("DepositMoney", () => {
   });
 
   it("should be able to make deposit", async () => {
-
     const transaction = await depositMoneyService.execute({
       accountId: 1,
       value: 10.00
@@ -37,6 +36,11 @@ describe("DepositMoney", () => {
         value: 10.00
       }),
     ).rejects.toBeInstanceOf(AppError);
+
+    expect(() => depositMoneyService.execute({
+      accountId: 2,
+      value: 10.00
+    })).rejects.toHaveProperty('message','Conta inválida!');
   });
 
   it("should not be able to make deposit for invalid value", async () => {
@@ -46,15 +50,25 @@ describe("DepositMoney", () => {
         value: 0.00
       }),
     ).rejects.toBeInstanceOf(AppError);
+
+    expect(() => depositMoneyService.execute({
+      accountId: 1,
+      value: 0.00
+    })).rejects.toHaveProperty('message','Valor da transação invalido!');
   });
 
-  it("should not be able to make deposit for  insert  invalid transaction", async () => {
+  it("should not be able to make deposit for insert invalid transaction", async () => {
     expect(
       depositMoneyService.execute({
         accountId: 1,
         value: 0.01
       }),
     ).rejects.toBeInstanceOf(AppError);
+
+    expect(() => depositMoneyService.execute({
+      accountId: 1,
+      value: 0.01
+    })).rejects.toHaveProperty('message','Falha ao realizar o depósito!');
   });
 
 });
